@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "poro_validations"
+require "pry"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
