@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Tiago Parreira"]
   spec.email         = ["parreirat@gmail.com"]
 
-  spec.summary       = ""
-  spec.description   = ""
-  spec.homepage      = ""
+  spec.summary       = "Simple PORO (Plain Old Ruby Object) attribute validation gem"
+  spec.description   = "Simple PORO (Plain Old Ruby Object) attribute validation gem"
+  spec.homepage      = "https://github.com/parreirat/poro_validations"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -33,12 +33,20 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler"
+
+  # In case we need any rake tasks.
   spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
+
+  # For proper and pretty debugging.
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "awesome_print"
+
+  # Code linting is always nice.
   spec.add_development_dependency "rubocop"
+
+  # We love tests!
+  spec.add_development_dependency "rspec"
   spec.add_development_dependency "guard"
   spec.add_development_dependency "guard-rspec"
 end
