@@ -14,9 +14,11 @@ module PoroValidations
 			@validations[klass_hash_key] = { _attribute_.to_sym => _validations_}
 		end
 
-		# For testing purposes... didn't find a better way for now.
-		def self.__unvalidates_klass__(_klass_)
-			binding.pry
+		# For debugging/testing purposes...
+		# @tparreira TODO - Make a method that grabs a klass and removes all
+		# the validations from PoroValidations::Validations, and also undefs all
+		# the methods on the klass.
+		def self.__remove_klass_validations__(_klass_)
 			klass_hash_key = _klass_.to_s.to_sym
 			@validations[klass_hash_key] = {}
 		end
@@ -45,12 +47,37 @@ module PoroValidations
 				Validations.__add_validation__(self, attribute, validations)
 				# if attribute_exists?(attribute)
 					define_method("#{attribute}_valid?".to_sym) do
-						# binding.pry
+						# @tparreira TODO - Classes for each :validation_type of
+						# validations with their methods to be called!
+						object_attribute = self.send(attribute.to_sym)
+						validations.each do |validation_type, value|
+							case validation_type
+								# @tparreira TODO - Should have separation of concerns... by
+								# type of validated object, needs good organization.
+								when :object_class
+									return object_attribute.is_a?(value)
+								when :greater_than
+									return object_attribute > value
+								when :lesser_than
+									return object_attribute < value
+								when :contains
+									# @tparreira NOTE - For String only, just as above are
+									# Integer only validations. NEED CONCERN SEPARATION!
+									return object_attribute.include?(value)
+								# else
+							end
+						end
 					end
+				# @tparreira TODO - Validate if attribute requesting validation exists?
 				# else
 				# 	raise ArgumentError,
 				# 		"Class '#{self.class}' does not respond to '#{attribute}'!"
 				# end
+			end
+
+			# @tparreira NOTE - For debugging/testing purposes...
+			def base.__unvalidates__(attribute)
+				undef_method("#{attribute}_valid?".to_sym)
 			end
 
 			# Check if attributes that :validates is being called for exists.
@@ -64,7 +91,7 @@ module PoroValidations
 				validations_for_klass = Validations.__validations__.fetch(klass_hash_key, {})
 				validations_for_klass.keys.each do |attribute|
 					self.send("#{attribute}_valid?")
-					# Add errors here? Inside *_valid?
+					# @tparreira NOTE - Add errors here? Inside *_valid?
 				end
 			end
 
