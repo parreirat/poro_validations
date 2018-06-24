@@ -18,8 +18,8 @@ module PoroValidations
 			# binding.pry
 			# base.errors = [1,2,3]
 
-			def base.validate(attribute, validations = {})
-
+			def base.validates(attribute, validations = {})
+				base.define_method("#{attribute}_is_valid?".to_sym)
 			end
 
 			def base.arguments_valid?
